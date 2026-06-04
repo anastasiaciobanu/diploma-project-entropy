@@ -1,65 +1,63 @@
-````markdown
 # entro(py)
 
-`entro(py)` is a bachelor’s thesis project for runtime entropy analysis and pseudo-randomness evaluation in Doom-based gameplay sessions. The project collects RNG values from Crispy Doom using Frida instrumentation, stores the captured data as structured experiment logs, and analyzes the results through a Python desktop application.
+`entro(py)` is a thesis project for runtime entropy analysis of pseudo-random values generated during Doom gameplay.
 
-The project combines a reproducible Docker experiment environment with a graphical Windows analysis tool. Docker is used to run the experiment in a controlled Linux environment, while the desktop application is used to load, visualize and export the generated results.
+The project uses **Crispy Doom**, **Freedoom**, **Frida**, **Docker** and a Python desktop application. The experiment collects RNG values while Doom is running, saves them as `.jsonl` logs, and then analyzes them with statistical metrics and visualizations.
 
----
+## What is included
 
-## What this project does
+This repository contains two main parts:
 
-The experiment observes pseudo-random values generated during three gameplay conditions:
+* a Docker experiment environment for running Doom and collecting RNG data;
+* a desktop analysis app for loading, visualizing and exporting the collected results.
 
-- idle gameplay;
-- scripted gameplay;
-- human gameplay.
+Sample data extracted from Doom using this instrumentation setup can be found in:
 
-During each run, Frida hooks selected Crispy Doom functions and records RNG values, timestamps and selected input-related events. The collected data is saved as `.jsonl` files in the `runs/` folder.
+`app/runs`
 
-The generated files can then be opened in the `entro(py)` application, where the data is analyzed using entropy, uniformity, correlation and sequence-complexity metrics.
+The compiled Windows application can be found in:
 
----
-
-## Main features
-
-- Runtime RNG extraction using Frida.
-- Reproducible experiment environment using Docker.
-- Crispy Doom built automatically inside the container.
-- Freedoom used as the free game data file.
-- Visible Doom session through noVNC.
-- JSONL logging for each experimental run.
-- Windows desktop application for analysis and visualization.
-- Export options for reports, metrics, summaries and bitstreams.
-
----
+`app/dist/entro.exe`
 
 ## Project structure
 
-The main project folders are:
+`app/` contains the analysis application, parser, statistical pipeline and sample runs.
 
-- `app/` — contains the `entro(py)` analysis application.
-- `scripts/` — contains the experiment runner and Frida hook.
-- `docker/` — contains the Docker entrypoint script.
-- `runs/` — stores generated experiment logs.
-- `Dockerfile` — builds the experiment environment.
-- `docker-compose.yml` — simplifies running the Docker container.
-- `start-desktop.ps1` — starts the visible Docker desktop.
-- `run-experiment.ps1` — starts the full experiment.
+`scripts/` contains the experiment runner and the Frida hook.
 
-The compiled Windows application is located at:
+`docker/` contains the Docker startup script.
 
-```text
-app/dist/entro.exe
-````
+`Dockerfile` builds the experiment environment.
 
----
+`docker-compose.yml` simplifies running the container.
+
+`start-desktop.ps1` opens the visible Docker desktop.
+
+`run-experiment.ps1` starts the full experiment.
+
+## Experiment details
+
+The experiment compares RNG values collected from three gameplay situations:
+
+* idle gameplay;
+* scripted gameplay;
+* human gameplay.
+
+During each run, Frida observes selected Crispy Doom functions and records RNG values, timestamps and input-related events. The generated data is saved as `.jsonl` files and can be opened later in the `entro(py)` application.
 
 ## Running the experiment on Windows
 
-The Docker experiment requires Windows 11, Docker Desktop, WSL 2 and Linux containers enabled.
+Requirements:
 
-Open PowerShell in the project root folder. If script execution is blocked, run:
+* Windows 11;
+* Docker Desktop;
+* WSL 2 enabled;
+* Linux containers enabled;
+* PowerShell.
+
+Open PowerShell in the project root folder.
+
+If script execution is blocked, run:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
@@ -71,53 +69,49 @@ Build the Docker image:
 docker compose build
 ```
 
-To open only the visible Docker desktop, run:
+Open the visible Docker desktop:
 
 ```powershell
 .\start-desktop.ps1
 ```
 
-To start the full experiment, run:
+Start the full experiment:
 
 ```powershell
 .\run-experiment.ps1
 ```
 
-The visible desktop is available in the browser at:
+The visible desktop opens through noVNC at:
 
 ```text
 http://127.0.0.1:6080/vnc.html?autoconnect=true&resize=scale
 ```
 
-The experiment output is saved automatically in the local `runs/` folder.
-
----
+Generated experiment logs are saved in the local `runs/` folder.
 
 ## Viewing the results
 
-After the experiment has generated data, open:
+Open the compiled app:
 
-```text
-app/dist/entro.exe
-```
+`app/dist/entro.exe`
 
-Then click `[ load folder ]` and select the `runs/` folder.
+Then click:
 
-The application displays the results through several pages:
+`[ load folder ]`
 
-* Overview;
-* Analysis;
-* Visualizations;
-* Compare;
-* Export.
+Select either:
 
-The app can also export JSON reports, CSV metrics, text summaries and binary bitstreams.
+`runs/`
 
----
+or the included sample data folder:
+
+`app/runs`
+
+The application displays the results through the Overview, Analysis, Visualizations, Compare and Export pages.
 
 ## Analysis metrics
 
-The analysis pipeline includes several statistical indicators used to evaluate distribution, temporal dependency and sequence complexity:
+The application computes metrics for entropy, uniformity, dependency and sequence structure, including:
 
 * Shannon entropy;
 * chi-square uniformity test;
@@ -130,43 +124,54 @@ The analysis pipeline includes several statistical indicators used to evaluate d
 * mutual information;
 * entropy over time.
 
-The results are intended for academic analysis of pseudo-random behaviour in an interactive system.
-
----
+The results are intended for academic analysis, not cryptographic certification.
 
 ## Third-party components
 
 This project uses Crispy Doom as the Doom source port used during the experiment.
 
-Crispy Doom is developed and maintained by its respective authors, including Fabian Greffrath.
-Original repository: https://github.com/fabiangreffrath/crispy-doom
-License: GNU General Public License v2.0.
+Crispy Doom is developed by its respective authors, including Fabian Greffrath.
+
+Original repository:
+
+```text
+https://github.com/fabiangreffrath/crispy-doom
+```
+
+License:
+
+```text
+GNU General Public License v2.0
+```
 
 This project also uses Freedoom as the free IWAD/game data file, so no commercial Doom WAD files are required.
 
-Freedoom is developed and maintained by the Freedoom project contributors.
-Original repository: https://github.com/freedoom/freedoom
-License: BSD-style permissive license.
+Freedoom is developed by the Freedoom project contributors.
+
+Original repository:
+
+```text
+https://github.com/freedoom/freedoom
+```
+
+License:
+
+```text
+BSD-style permissive license
+```
 
 This project does not claim ownership over Crispy Doom or Freedoom. They are used only as third-party components required to reproduce the experiment.
 
----
-
 ## Notes
 
-The Frida hook observes runtime behaviour without modifying the Doom source code or changing the gameplay logic.
+The Frida hook observes runtime behaviour without modifying the original Doom source code or gameplay logic.
 
-The Docker environment is used for experiment reproduction. The desktop application is used separately for loading and analyzing the generated logs.
+Docker is used only for experiment reproduction. The desktop application is used separately for analyzing the generated logs.
 
-The statistical analysis is exploratory and academic. It should not be interpreted as cryptographic certification.
-
----
+It is recommended to use the included sample data from app/runs when testing the application functionality. A complete experiment run can take approximately three hours, and the human gameplay condition requires direct user interaction for about one hour.
 
 ## Author
 
 Anastasia Ciobanu
 
 Bachelor’s thesis project — runtime entropy analysis and pseudo-randomness evaluation in interactive systems.
-
-```
-```
