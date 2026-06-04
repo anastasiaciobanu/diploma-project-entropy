@@ -1,0 +1,18 @@
+{
+  "conditions": ["idle", "scripted", "human"],
+  "n_runs": 10,
+
+  "analysis": {
+    "autocorrelation_max_lag": 50,
+    "entropy_window_size": 500
+  },
+
+  "plots": {
+    "sequence_n": 1000
+  },
+
+  "output": {
+    "save_plots": true,
+    "save_stats": true
+  }
+}

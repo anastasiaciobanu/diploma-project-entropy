@@ -1,0 +1,57 @@
+entro(py) analysis summary
+==================================================
+
+IDLE
+--------------------------------------------------
+Samples: 197344
+Min: 0
+Max: 255
+Mean: 128.81986784498136
+Standard deviation: 72.46482146502683
+Shannon entropy: 7.2123314269883
+Permutation entropy: 0.9983508439342176
+Chi-square statistic: 186463.06859088695
+Chi-square p-value: 0.0
+Cramér's V: 0.060871549916578484
+Runs test z-stat: -5.9833026875830075
+Runs test p-value: 2.1865786958841227e-09
+Serial correlation: 0.022869178356104882
+Max autocorr lag 1-50: 0.1021709316824343
+Mean mutual information: 3.8164376159278772
+
+SCRIPTED
+--------------------------------------------------
+Samples: 1821290
+Min: 0
+Max: 255
+Mean: 128.85299430623348
+Standard deviation: 72.47525839793573
+Shannon entropy: 7.212224898308929
+Permutation entropy: 0.998105558258378
+Chi-square statistic: 1721352.7923065517
+Chi-square p-value: 0.0
+Cramér's V: 0.06088009233436157
+Runs test z-stat: -19.035953143583544
+Runs test p-value: 0.0
+Serial correlation: 0.027079940102412138
+Max autocorr lag 1-50: 0.12204017434252427
+Mean mutual information: 4.600910906821238
+
+HUMAN
+--------------------------------------------------
+Samples: 478334
+Min: 0
+Max: 255
+Mean: 128.85561762283257
+Standard deviation: 72.47604501041867
+Shannon entropy: 7.212175476127062
+Permutation entropy: 0.9991118272997765
+Chi-square statistic: 452155.94458265556
+Chi-square p-value: 0.0
+Cramér's V: 0.060884733083898315
+Runs test z-stat: -6.51110062985536
+Runs test p-value: 7.460210227350217e-11
+Serial correlation: 0.020549795107952268
+Max autocorr lag 1-50: 0.07445781845290642
+Mean mutual information: 2.3573647031932023
+

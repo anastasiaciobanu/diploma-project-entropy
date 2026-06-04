@@ -1,0 +1,25 @@
+services:
+  experiment:
+    image: entro-experiment:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: entro-experiment
+
+    ports:
+      - "6080:6080"
+
+    volumes:
+      - ./runs:/opt/entro/runs
+
+    cap_add:
+      - SYS_PTRACE
+
+    security_opt:
+      - seccomp=unconfined
+
+    stdin_open: true
+    tty: true
+
+    command: desktop

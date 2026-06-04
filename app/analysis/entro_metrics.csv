@@ -1,0 +1,46 @@
+dataset,metric,value
+idle,Samples,197344
+idle,Min,0
+idle,Max,255
+idle,Mean,128.81986784498136
+idle,Standard deviation,72.46482146502683
+idle,Shannon entropy,7.2123314269883
+idle,Permutation entropy,0.9983508439342176
+idle,Chi-square statistic,186463.06859088695
+idle,Chi-square p-value,0.0
+idle,Cramér's V,0.060871549916578484
+idle,Runs test z-stat,-5.9833026875830075
+idle,Runs test p-value,2.1865786958841227e-09
+idle,Serial correlation,0.022869178356104882
+idle,Max autocorr lag 1-50,0.1021709316824343
+idle,Mean mutual information,3.8164376159278772
+scripted,Samples,1821290
+scripted,Min,0
+scripted,Max,255
+scripted,Mean,128.85299430623348
+scripted,Standard deviation,72.47525839793573
+scripted,Shannon entropy,7.212224898308929
+scripted,Permutation entropy,0.998105558258378
+scripted,Chi-square statistic,1721352.7923065517
+scripted,Chi-square p-value,0.0
+scripted,Cramér's V,0.06088009233436157
+scripted,Runs test z-stat,-19.035953143583544
+scripted,Runs test p-value,0.0
+scripted,Serial correlation,0.027079940102412138
+scripted,Max autocorr lag 1-50,0.12204017434252427
+scripted,Mean mutual information,4.600910906821238
+human,Samples,478334
+human,Min,0
+human,Max,255
+human,Mean,128.85561762283257
+human,Standard deviation,72.47604501041867
+human,Shannon entropy,7.212175476127062
+human,Permutation entropy,0.9991118272997765
+human,Chi-square statistic,452155.94458265556
+human,Chi-square p-value,0.0
+human,Cramér's V,0.060884733083898315
+human,Runs test z-stat,-6.51110062985536
+human,Runs test p-value,7.460210227350217e-11
+human,Serial correlation,0.020549795107952268
+human,Max autocorr lag 1-50,0.07445781845290642
+human,Mean mutual information,2.3573647031932023

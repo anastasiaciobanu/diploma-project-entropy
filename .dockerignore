@@ -1,0 +1,41 @@
+```dockerignore
+# ignore everything by default
+*
+
+# keep docker build files
+!Dockerfile
+!.dockerignore
+
+# keep the docker helper scripts
+!docker/
+!docker/**
+
+# keep only the experiment scripts
+!scripts/
+!scripts/run_manager.py
+!scripts/rng_hook.js
+
+# do not include generated experiment output
+runs/
+app/runs/
+app/analysis/
+
+# do not include venv
+venv/
+app/venv/
+
+# do not include compiled GUI builds
+app/build/
+app/dist/
+app/*.spec
+
+# do not include cached Python files
+__pycache__/
+app/__pycache__/
+*.pyc
+*.pyo
+
+# do not include local doom build
+# doom will be cloned and built inside docker instead
+doom/
+```
