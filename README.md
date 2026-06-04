@@ -1,90 +1,65 @@
 ````markdown
-# entro(py) — Runtime Entropy Analysis of Doom RNG
+# entro(py)
 
-`entro(py)` is a thesis project for collecting, analyzing and visualizing pseudo-random values generated at runtime by the Doom engine. The project uses Frida instrumentation, Crispy Doom and Freedoom to observe RNG behaviour during gameplay, then processes the collected data through a Python analysis application.
+`entro(py)` is a bachelor’s thesis project for runtime entropy analysis and pseudo-randomness evaluation in Doom-based gameplay sessions. The project collects RNG values from Crispy Doom using Frida instrumentation, stores the captured data as structured experiment logs, and analyzes the results through a Python desktop application.
 
-The project is organized into two main parts: a Docker-based experiment environment used for reproducible data collection, and a desktop application used for statistical analysis and visualization.
+The project combines a reproducible Docker experiment environment with a graphical Windows analysis tool. Docker is used to run the experiment in a controlled Linux environment, while the desktop application is used to load, visualize and export the generated results.
 
 ---
 
-## Project purpose
+## What this project does
 
-The purpose of this project is to study how pseudo-random values behave in an interactive real-time system. The experiment compares RNG output collected from three gameplay conditions:
+The experiment observes pseudo-random values generated during three gameplay conditions:
 
 - idle gameplay;
 - scripted gameplay;
 - human gameplay.
 
-The collected values are saved as structured `.jsonl` files and later analyzed using entropy, uniformity, correlation and sequence-complexity metrics.
+During each run, Frida hooks selected Crispy Doom functions and records RNG values, timestamps and selected input-related events. The collected data is saved as `.jsonl` files in the `runs/` folder.
+
+The generated files can then be opened in the `entro(py)` application, where the data is analyzed using entropy, uniformity, correlation and sequence-complexity metrics.
+
+---
+
+## Main features
+
+- Runtime RNG extraction using Frida.
+- Reproducible experiment environment using Docker.
+- Crispy Doom built automatically inside the container.
+- Freedoom used as the free game data file.
+- Visible Doom session through noVNC.
+- JSONL logging for each experimental run.
+- Windows desktop application for analysis and visualization.
+- Export options for reports, metrics, summaries and bitstreams.
 
 ---
 
 ## Project structure
 
-`app/` contains the graphical analysis application.
-`scripts/` contains the experiment runner and the Frida hook.
-`docker/` contains the Docker entrypoint script.
-`runs/` stores the generated experiment logs.
-`Dockerfile` and `docker-compose.yml` define the reproducible experiment environment.
+The main project folders are:
 
----
+- `app/` — contains the `entro(py)` analysis application.
+- `scripts/` — contains the experiment runner and Frida hook.
+- `docker/` — contains the Docker entrypoint script.
+- `runs/` — stores generated experiment logs.
+- `Dockerfile` — builds the experiment environment.
+- `docker-compose.yml` — simplifies running the Docker container.
+- `start-desktop.ps1` — starts the visible Docker desktop.
+- `run-experiment.ps1` — starts the full experiment.
 
-## Main components
-
-### Docker experiment environment
-
-The Docker container builds Crispy Doom, installs Freedoom, starts a visible Linux desktop through noVNC and runs the experiment manager. This allows the data collection process to be reproduced outside the original Linux development machine.
-
-### Frida instrumentation
-
-The `rng_hook.js` script attaches to selected Crispy Doom functions at runtime. It captures RNG values and selected input timing events, then sends them to `run_manager.py`.
-
-The hook observes the running process without modifying the Doom source code or changing the gameplay logic.
-
-### Analysis application
-
-The `entro(py)` desktop application loads generated `.jsonl` files, computes statistical indicators and displays results through an interactive graphical interface. A compiled Windows executable is available in:
+The compiled Windows application is located at:
 
 ```text
 app/dist/entro.exe
-```
-
----
-
-## Experiment workflow
-
-The experiment follows this process:
-
-1. Docker starts a reproducible Linux environment.
-2. Crispy Doom is built inside the container.
-3. Freedoom is used as the IWAD file.
-4. `run_manager.py` starts Doom through Frida.
-5. `rng_hook.js` captures RNG values and input timing events.
-6. Runtime events are saved as `.jsonl` files in `runs/`.
-7. The generated files are loaded into `entro(py)`.
-8. The application computes and visualizes the statistical results.
-
----
-
-## Requirements
-
-For Windows usage:
-
-* Windows 11;
-* Docker Desktop;
-* WSL 2 backend enabled;
-* Linux containers enabled;
-* PowerShell.
-
-The compiled analysis application does not require a local Python installation.
+````
 
 ---
 
 ## Running the experiment on Windows
 
-Open PowerShell in the project root folder.
+The Docker experiment requires Windows 11, Docker Desktop, WSL 2 and Linux containers enabled.
 
-If PowerShell blocks local scripts, run:
+Open PowerShell in the project root folder. If script execution is blocked, run:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
@@ -96,61 +71,53 @@ Build the Docker image:
 docker compose build
 ```
 
-Start only the visible Docker desktop:
+To open only the visible Docker desktop, run:
 
 ```powershell
 .\start-desktop.ps1
 ```
 
-Start the full experiment:
+To start the full experiment, run:
 
 ```powershell
 .\run-experiment.ps1
 ```
 
-The noVNC interface is available at:
+The visible desktop is available in the browser at:
 
 ```text
 http://127.0.0.1:6080/vnc.html?autoconnect=true&resize=scale
 ```
 
+The experiment output is saved automatically in the local `runs/` folder.
+
 ---
 
 ## Viewing the results
 
-After the experiment runs, the generated logs are saved in:
+After the experiment has generated data, open:
 
 ```text
-runs/
+app/dist/entro.exe
 ```
 
-To inspect the results:
+Then click `[ load folder ]` and select the `runs/` folder.
 
-1. Open `app/dist/entro.exe`.
-2. Click `[ load folder ]`.
-3. Select the `runs/` folder.
-4. Use the Overview, Analysis, Visualizations, Compare and Export pages.
+The application displays the results through several pages:
+
+* Overview;
+* Analysis;
+* Visualizations;
+* Compare;
+* Export.
+
+The app can also export JSON reports, CSV metrics, text summaries and binary bitstreams.
 
 ---
 
-## Output files
+## Analysis metrics
 
-Each experimental run generates a `.jsonl` file. Example files:
-
-```text
-idle_run_1.jsonl
-scripted_run_1.jsonl
-human_run_1.jsonl
-state.json
-```
-
-The `.jsonl` files contain structured runtime events, including RNG values, timestamps, uptime values and input-related events.
-
----
-
-## Statistical analysis
-
-The application computes several metrics used to evaluate distribution, dependency, temporal structure and sequence complexity:
+The analysis pipeline includes several statistical indicators used to evaluate distribution, temporal dependency and sequence complexity:
 
 * Shannon entropy;
 * chi-square uniformity test;
@@ -167,58 +134,33 @@ The results are intended for academic analysis of pseudo-random behaviour in an 
 
 ---
 
-## Notes and limitations
+## Third-party components
 
-This project uses Freedoom and does not require commercial Doom WAD files.
+This project uses Crispy Doom as the Doom source port used during the experiment.
 
-The Frida hook observes runtime behaviour without modifying the original Doom source code.
+Crispy Doom is developed and maintained by its respective authors, including Fabian Greffrath.
+Original repository: https://github.com/fabiangreffrath/crispy-doom
+License: GNU General Public License v2.0.
 
-The statistical analysis is exploratory and academic. It should not be interpreted as cryptographic certification.
+This project also uses Freedoom as the free IWAD/game data file, so no commercial Doom WAD files are required.
 
-The Docker environment is used for experiment reproduction, while the desktop application is used for analysis and visualization.
+Freedoom is developed and maintained by the Freedoom project contributors.
+Original repository: https://github.com/freedoom/freedoom
+License: BSD-style permissive license.
+
+This project does not claim ownership over Crispy Doom or Freedoom. They are used only as third-party components required to reproduce the experiment.
 
 ---
 
-## Third-party components
+## Notes
 
-This project uses third-party open-source components for the experiment environment.
+The Frida hook observes runtime behaviour without modifying the Doom source code or changing the gameplay logic.
 
-### Crispy Doom
+The Docker environment is used for experiment reproduction. The desktop application is used separately for loading and analyzing the generated logs.
 
-Crispy Doom is used as the Doom source port executed during the experiment. It is developed and maintained by its respective authors, including Fabian Greffrath.
+The statistical analysis is exploratory and academic. It should not be interpreted as cryptographic certification.
 
-Original repository:
-
-```text
-https://github.com/fabiangreffrath/crispy-doom
-````
-
-License:
-
-```text
-GNU General Public License v2.0 (GPL-2.0)
-```
-
-### Freedoom
-
-Freedoom is used as the free IWAD/game data file for running the experiment without requiring commercial Doom WAD files. It is developed and maintained by the Freedoom project contributors.
-
-Original repository:
-
-```text
-https://github.com/freedoom/freedoom
-```
-
-License:
-
-```text
-BSD-style permissive license
-```
-
-This project does not claim ownership over Crispy Doom or Freedoom. They are included or installed only as dependencies required to reproduce the experiment. All rights remain with their respective authors and contributors.
-
-```
-
+---
 
 ## Author
 
